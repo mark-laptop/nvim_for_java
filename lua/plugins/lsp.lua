@@ -8,7 +8,26 @@ return {
         runtime = { version = "LuaJIT" },
         workspace = { library = { vim.env.VIMRUNTIME } },
       } } })
-      vim.lsp.enable({ "lua_ls", "lemminx", "yamlls" })
+      local python = require("python.env")
+      vim.lsp.config("pyright", {
+        root_markers = python.markers,
+        before_init = function(_, config)
+          local ok, path = pcall(python.resolve, config.root_dir)
+          if ok then config.settings.python.pythonPath = path end
+        end,
+        settings = {
+          pyright = { disableOrganizeImports = true },
+          python = { analysis = {
+            typeCheckingMode = "basic", autoImportCompletions = true,
+            diagnosticMode = "openFilesOnly",
+          } },
+        },
+      })
+      vim.lsp.config("ruff", {
+        root_markers = python.markers,
+        on_attach = function(client) client.server_capabilities.hoverProvider = false end,
+      })
+      vim.lsp.enable({ "lua_ls", "lemminx", "yamlls", "pyright", "ruff" })
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspMappings", { clear = true }),
         callback = function(event)
