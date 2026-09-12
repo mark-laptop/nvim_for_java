@@ -16,6 +16,7 @@ return {
 	},
 	{
 		"hrsh7th/nvim-cmp",
+		dependencies = { "hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "hrsh7th/cmp-path" },
 		config = function()
 			local cmp = require('cmp')
 			cmp.setup({
@@ -25,8 +26,8 @@ return {
 					end,
 				},
 				window = {
-					-- completion = cmp.config.window.bordered(),
-					-- documentation = cmp.config.window.bordered(),
+					completion = cmp.config.window.bordered(),
+					documentation = cmp.config.window.bordered(),
 				},
 				mapping = cmp.mapping.preset.insert({
 					['<C-b>'] = cmp.mapping.scroll_docs(-4),
@@ -37,6 +38,8 @@ return {
 					['<Tab>'] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_next_item()
+						elseif vim.snippet.active({ direction = 1 }) then
+							vim.snippet.jump(1)
 						else
 							fallback()
 						end
@@ -44,6 +47,8 @@ return {
 					['<S-Tab>'] = cmp.mapping(function(fallback)
 						if cmp.visible() then
 							cmp.select_prev_item()
+						elseif vim.snippet.active({ direction = -1 }) then
+							vim.snippet.jump(-1)
 						else
 							fallback()
 						end

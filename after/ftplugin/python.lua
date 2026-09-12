@@ -2,6 +2,7 @@ vim.bo.expandtab = true
 vim.bo.shiftwidth = 4
 vim.bo.softtabstop = 4
 vim.bo.tabstop = 4
+require("python.completion").setup(vim.api.nvim_get_current_buf())
 local function map(key, fn, desc)
   vim.keymap.set("n", key, fn, { buffer = true, desc = desc })
 end

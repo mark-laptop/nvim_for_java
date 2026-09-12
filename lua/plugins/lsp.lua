@@ -19,6 +19,7 @@ return {
           pyright = { disableOrganizeImports = true },
           python = { analysis = {
             typeCheckingMode = "basic", autoImportCompletions = true,
+            autoSearchPaths = true, useLibraryCodeForTypes = true,
             diagnosticMode = "openFilesOnly",
           } },
         },
