@@ -27,7 +27,9 @@ return {
         root_markers = python.markers,
         on_attach = function(client) client.server_capabilities.hoverProvider = false end,
       })
-      vim.lsp.enable({ "lua_ls", "lemminx", "yamlls", "pyright", "ruff" })
+      require("core.web-lsp").setup()
+      vim.lsp.enable({ "lua_ls", "lemminx", "yamlls", "pyright", "ruff",
+        "html", "marksman", "dockerls", "docker_compose_language_service" })
       vim.api.nvim_create_autocmd("LspAttach", {
         group = vim.api.nvim_create_augroup("UserLspMappings", { clear = true }),
         callback = function(event)
